@@ -44,10 +44,10 @@ int main(int argc, char *argv[])
 	{
 		if (check_num(argv[count]))
 		{
-			str_to_int = atoi(argv[count]) /*ATOI --> converts string to int*/
+			str_to_int = atoi(argv[count]); /*ATOI --> converts string to int*/
 				sum += str_to_int;
 		}
-		/*a condition if nnumbers are not digits*/
+		/*condition if one of the numbers contains symbols that are not digits*/
 		else
 		{
 			printf("error\n");
