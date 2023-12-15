@@ -7,21 +7,30 @@
  */
 int main(void)
 {
-	int n,m;
-	for (m=49; m<=57; m++)
-	{
-		if(m > n)
-		{
-			putchar(n);5
-			putchar(m);
-			if (n!=56 || m!=57)
-			{
-				putchar(',');
-				putchar('.');
-			}
-		}
-	}
-	putchar("\n");
-        return (0);
-}
+	int i = 0;
 
+	while (i <= 9)
+	{
+		int x = i;
+
+		while (x <= 9)
+		{
+			if (x != i)
+			{
+				putchar (i % 10 + '0');
+				putchar (x % 10 + '0');
+				if (i != 8)
+				{
+					putchar(',');
+					putchar(' ');
+				}
+			}
+			x++;
+
+		}
+		i++;
+
+	}
+	putchar ('\n');
+	return (0);
+}

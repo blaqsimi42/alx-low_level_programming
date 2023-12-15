@@ -7,31 +7,14 @@
  */
 int main(void)
 {
-	int i;
+	int i = 0;
 
-	for (i= 48, i < 58; i++)
-        {
-		printf("%d , i);
-	}
-	putchar('\n');
-	return (0);
-}
-
-	(task 7)
-#include <stdio.h>
-
-/**
- * main - prints the lowercase alphabet in reverse
- *followed by a new line
- *Return: Always o (success)
- */
-int main(void)
-{
-	char ch;
-	for (ch='z'; ch>='a'; ch--)
+	while (i <= 9)
 	{
-		putchar(ch);
+		putchar (i % 10 + '0');
+		i++;
+
 	}
-	putchar("\n");
+	putchar ('\n');
 	return (0);
 }

@@ -9,17 +9,14 @@
  */
 int main(void)
 {
-        int i;
+	char c = 'a';
 
-	for (i = 97; i < 123; i++)
+	while (c <= 'z')
 	{
-		if(i != 101 && i=113)
-        	{
-			putchar(i);
-		}
+		if (c != 'e' && c != 'q')
+			putchar(c);
+		c++;
 	}
-        putchar('\n');
+	putchar('\n');
 	return (0);
 }
-
-
