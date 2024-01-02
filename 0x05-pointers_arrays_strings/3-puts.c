@@ -1,35 +1,17 @@
-#include "holberton.h"
+#include "main.h"
 
 /**
- * _strlen - get length of a string
+ * _puts - puts a string followed by a newline to standard output
  *
- * @s: string to get length of
- *
- * Return: length of string
- */
-int _strlen(char *s)
-{
-	int i;
-
-	for (i = 0; s[i] != '\0'; i++)
-	{
-	}
-
-	return (i);
-}
-
-/**
- * print_rev - prints a string in reverse
- *
- * @s: string to print in reverse
+ * @str: string to be printed
  *
  * Return: void
  */
-void print_rev(char *s)
+void _puts(char *str)
 {
 	int i;
 
-	for (i = _strlen(s) - 1; i >= 0; i--)
-		_putchar(s[i]);
+	for (i = 0; str[i] != '\0'; i++)
+		_putchar(str[i]);
 	_putchar('\n');
 }
