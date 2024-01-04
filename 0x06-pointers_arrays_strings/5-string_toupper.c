@@ -1,20 +1,19 @@
 #include <stdio.h>
-
 /**
- * string_toupper - converts characters in a string to uppercase
+ * string_toupper - converts lowercase of a string to uppercase.
+ * @str: string pointer
  *
- * @a: string to convert
- *
- * return: character array
+ * Return: string in uppercase.
  */
-char *string_toupper(char *a)
+char *string_toupper(char *str)
 {
-	char *ptr = a;
-	while (*ptr != '\0')
+	int i = 0;
+
+	while (*(str + i) != '\0')
 	{
-		if (*ptr > 'a' && *ptr < 'z')
-			*ptr -= 32;
-		ptr++;
+		if (*(str + i) >= 'a' && *(str + i) <= 'z')
+			*(str + i) = *(str + i) - 32;
+		i++;
 	}
-	return (a);
+	return (str);
 }
