@@ -1,157 +1,144 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "main.h"
 
-int isNumber(char *str);
-int *int_calloc(int nmemb, unsigned int size);
-void multiply(int *product, char *n1, char *n2, int len1, int len2);
-
 /**
-  * error - print error message.
-  * @code: error code for exit
-  * Return: void
-  */
-void error(int code)
+ * _prntstr - prints a string
+ *
+ * @s: string to print
+ */
+void _prntstr(char *s)
 {
-	_putchar('E');
-	_putchar('r');
-	_putchar('r');
-	_putchar('o');
-	_putchar('r');
-	_putchar('\n');
-	exit(code);
+	while (*s)
+		_putchar(*s++);
 }
 
 /**
-* main - multiplies two numbers recieved through command line.
-* @argc: number of command line arguments
-* @argv: An array containing the program command line arguments
-*
-* Return: 0 if success otherwise 1.
-*/
-
-int main(int argc, char *argv[])
+ * numstrchk - checks arg array to see if the are numeric strings, converts
+ * from ascii to byte int, and returns their length. Segfault on null pointer.
+ *
+ * @s: string to check
+ *
+ * Return: Length of string. Exit 98 if not numeric.
+ */
+long int numstrchk(char *s)
 {
-	int *mul, i, j, len1 = 0, len2 = 0;
+	long int len = 0;
 
-	if (argc != 3)
-		error(98);
-
-	for (i = 1; i < argc; ++i)
+	if (*s == 0)
 	{
-		if (!isNumber(argv[i]))
-			error(98);
-		if (i == 1)
-		{
-			for (j = 0; argv[i][j]; j++)
-				++len1;
-		}
-		if (i == 2)
-		{
-			for (j = 0; argv[i][j]; j++)
-				++len2;
-		}
+		_prntstr("Error\n");
+		exit(98);
 	}
 
-	mul = int_calloc(len1 + len2, sizeof(int));
-	if (mul == NULL)
-		error(98);
-
-	multiply(mul, argv[1], argv[2], len1, len2);
-	free(mul);
-
-return (0);
+	while (*s)
+	{
+		if (*s < '0' || *s > '9')
+		{
+			_prntstr("Error\n");
+			exit(98);
+		}
+		*s -= '0';
+		len++;
+		s++;
+	}
+	return (len);
 }
 
 /**
-* isNumber - check if string is a number.
-* @str: string parameter
-*
-* Return: 1 if number otherwise 0.
-*/
-
-int isNumber(char *str)
+ * _calloc_buffer - allocate a block of memory of size * num and init to '0'
+ *
+ * @num: number of elements to allocate
+ * @size: size of element
+ *
+ * Return: pointer to allocated space, exit 98 on failure
+ */
+void *_calloc_buffer(long int num, long int size)
 {
-	int j = strlen(str);
+	void *ret;
+	char *ptr;
 
-	while (j--)
+	ret = malloc(num * size);
+	if (ret == 0)
 	{
-		if (str[j] > 47 && str[j] < 58)
-			continue;
+		exit(98);
+	}
+
+	size = size * num;
+	ptr = ret;
+	ptr[--size] = 0;
+	while (size--)
+		ptr[size] = '0';
+
+	return (ret);
+}
+
+/**
+ * trimzero - moves pointer position to after last leading 0 in a string,
+ * or last zero if all zeros
+ *
+ * @s: char * we want to move
+ *
+ * Return: new position
+ */
+char *trimzero(char *s)
+{
+	while (*s == '0')
+		if (*(s + 1) != 0)
+			s++;
+		else
+			break;
+	return (s);
+}
+
+/**
+ * main - multiply two  positive integer strings of arbitrary size
+ *
+ * @ac: number of arguments
+ * @av: arugments
+ *
+ * Return: 0 if successful, 98 if failure
+ */
+int main(int ac, char **av)
+{
+	long int len1, len2, lenres, i, j;
+	char *res;
+
+	if (ac != 3)
+	{
+		_prntstr("Error\n");
+		return (98);
+	}
+	av[2] = trimzero(av[2]);
+	av[1] = trimzero(av[1]);
+	if (*av[1] == '0' || *av[2] == '0')
+	{
+		_prntstr("0\n");
 		return (0);
 	}
-return (1);
-}
+	len1 = numstrchk(av[1]);
+	len2 = numstrchk(av[2]);
+	lenres = len1 + len2;
+	res = _calloc_buffer(lenres + 1, sizeof(char));
 
-/**
-  * int_calloc - special calloc for int arrays
-  * @nmemb: n memb
-  * @size: size of array
-  * Return: int *
-  */
-int *int_calloc(int nmemb, unsigned int size)
-{
-	int *p, n;
-
-	if (nmemb == 0 || size == 0)
-		return (NULL);
-
-	/* malloc the space & check for fail */
-	p = malloc(nmemb * size);
-	if (p == NULL)
-		return (NULL);
-
-	for (n = 0; n < nmemb; n++)
-		p[n] = 0;
-
-	return (p);
-}
-
-/**
-  * multiply - multiplies integers
-  *
-  * @product: int pointer to multiply answer
-  * @n1: num1 as a string param
-  * @n2: num2 as a string param
-  * @len1: len of num1
-  * @len2: len of num2
-  *
-  * Return: void
-  */
-
-void multiply(int *product, char *n1, char *n2, int len1, int len2)
-{
-	int i, j, i_n1 = 0, i_n2 = 0, res1, res2, sum, carry;
-	for (i = len1 - 1; i >= 0; i--)
-	{
-		sum = 0;
-		carry = 0;
-		i_n2 = 0;
-		res1 = n1[i] - '0';
-
-		/* Go from right to left in num2 */
-		for (j = len2 - 1; j >= 0; j--)
+	for (i = lenres - 1, len1--; len1 >= 0; len1--, i += len2 - 1)
+		for (j = len2 - 1; j >= 0; j--, i--)
 		{
-			res2 = n2[j] - '0';
-			sum = (res1 * res2) + product[i_n1 + i_n2] + carry;
-			 product[i_n1 + i_n2] = sum % 10;
-			carry = sum / 10;
-			i_n2++;
+			res[i] = (av[1][len1] * av[2][j] % 10) + res[i];
+			res[i - 1] = (av[1][len1] * av[2][j] / 10) + res[i - 1];
+			if (res[i] > '9')
+			{
+				res[i] -= 10;
+				res[i - 1]++;
+			}
 		}
 
-		if (carry > 0)
-			product[i_n1 + i_n2] += carry;
-		i_n1++;
-	}
-	i = len1 + len2;
-	while (--i > 0 && product[i] == 0)
-		;
-
-	if (i == -1)
-		_putchar('0');
-
-	while (i >= 0)
-		_putchar(product[i--] + '0');
+	if (*res == '0')
+		_prntstr(res + 1);
+	else
+		_prntstr(res);
 	_putchar('\n');
+	free(res);
+
+	return (0);
 }
