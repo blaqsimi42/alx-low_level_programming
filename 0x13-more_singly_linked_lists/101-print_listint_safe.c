@@ -40,7 +40,7 @@ size_t check_looped_listint(const listint_t *head)
 			dog = dog->next;
 		}
 		mouse = mouse->next;
-		while (mouse!= dog)
+		while (mouse != dog)
 		{
 			nodes++;
 			mouse = mouse->next;
